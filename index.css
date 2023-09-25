@@ -1,0 +1,55 @@
+*{
+    font-family: "Arial";
+}
+.container{
+    display: flex;
+    justify-content: center;
+}
+.block{
+    display: flex;
+    width: 800px;
+    height: 340px;
+    align-items: center;
+}
+#word{
+    text-align: center;
+    letter-spacing: 5px;
+    font-size: 25px;
+    padding: 0;
+    margin: 5px;
+
+}
+#attempts{
+    text-align: center;
+}
+#attempts:before{
+    content: "Attempts:";
+}
+.left, .right {
+    flex: 1;
+    padding: 10px;
+}
+.btn{
+    font-size: 35px;
+    width: 50px;
+    height: 50px;
+    margin: 3px;
+}
+.hidden{
+    display: none;
+}
+.menu{
+    width: 600px;
+    margin: auto;
+    text-align: center;
+}
+.start-btn{
+    padding: 10px 25px;
+    font-size: 18px;
+}
+.message{
+    line-height: 50px;
+    font-weight: normal;
+}
+
+
