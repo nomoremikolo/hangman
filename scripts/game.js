@@ -52,12 +52,18 @@ class HangmanGame {
     }
     
     handleCorrectGuess(letter) {
+        const wordArray = this.word.split("");
         const guessedWordArray = this.guessedWord.split("");
+        const letterIndices = [];
     
-        for (let i = 0; i < this.word.length; i++) {
-            if (this.word[i].toLowerCase() === letter) {
-                guessedWordArray[i] = this.word[i];
+        for (let i = 0; i < wordArray.length; i++) {
+            if (wordArray[i].toLowerCase() === letter) {
+                letterIndices.push(i);
             }
+        }
+    
+        for (const index of letterIndices) {
+            guessedWordArray[index] = wordArray[index];
         }
     
         this.guessedWord = guessedWordArray.join("");
@@ -69,6 +75,7 @@ class HangmanGame {
             soundManager.playSuccess();
         }
     }
+    
     
     handleIncorrectGuess() {
         this.attempt--;
@@ -100,17 +107,19 @@ class HangmanGame {
     }    
 
     openLetter(letter) {
+        const lowercaseLetter = letter.toLowerCase();
         const guessedWordArray = this.guessedWord.split("");
-
+    
         for (let i = 0; i < this.word.length; i++) {
-            if (this.word[i] === letter) {
-                guessedWordArray[i] = letter;
+            if (this.word[i].toLowerCase() === lowercaseLetter) {
+                guessedWordArray[i] = this.word[i];
             }
         }
-
+    
         this.guessedWord = guessedWordArray.join("");
         this.wordElement.innerHTML = this.guessedWord;
     }
+    
 
     makeWord() {
         this.word = WORDS[Math.floor(Math.random() * WORDS.length)];
