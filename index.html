@@ -9,6 +9,10 @@
     <title>Hangman</title>
 </head>
 <body>
+    <audio id="errorSound" type="audio/wav" src="./sounds/clickWrong.wav"></audio>
+    <audio id="successSound" type="audio/wav" src="./sounds/clickSuccess.wav"></audio>
+    <audio id="winSound" type="audio/wav" src="./sounds/winSound.wav"></audio>
+    <audio id="loseSound" type="audio/wav" src="./sounds/loseSound.wav"></audio>
     <div id="menu" class="menu">
         <h1 id="message" class="message">Start the game?</h1>
         <button onclick="game.startGame()" class="start-btn">Start</button>

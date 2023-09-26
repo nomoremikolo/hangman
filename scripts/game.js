@@ -4,6 +4,10 @@ const attemptDemoElement = document.querySelector("#attemptDemo")
 const messageElement = document.querySelector("#message")
 const gameDiv = document.querySelector("#game")
 const menuDiv = document.querySelector("#menu")
+const successSound = document.querySelector("#successSound")
+const errorSound = document.querySelector("#errorSound")
+const winSound = document.querySelector("#winSound")
+const loseSound = document.querySelector("#loseSound")
 
 class Game{
     word = ""
@@ -39,18 +43,30 @@ class Game{
             }
         }
         if (!isTrueLetter){
+
             this.attempt--;
             this.updateAttempt()
             if (this.attempt < 1){
                 this.gameOver(`You lost :( </br> The word you were trying to guess was <u>${this.word}</u>. <br/>Let's try again?`)
+                loseSound.currentTime = 0;
+                loseSound.play()
                 return
             }
+            errorSound.currentTime = 0;
+            errorSound.play()
+        }else{
+
+            this.openLetter(letter)
+            if (this.guessedWord === this.word){
+                this.gameOver("Greeting! You guessed the word")
+                winSound.currentTime = 0;
+                winSound.play()
+                return
+            }
+            successSound.currentTime = 0;
+            successSound.play()
         }
 
-        this.openLetter(letter)
-        if (this.guessedWord === this.word){
-            this.gameOver("Greeting! You guessed the word")
-        }
     }
 
     openLetter(letter){
