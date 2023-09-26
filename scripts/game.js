@@ -1,94 +1,132 @@
-const wordElement = document.querySelector("#word")
-const attemptsElement = document.querySelector("#attempts")
-const attemptDemoElement = document.querySelector("#attemptDemo")
-const messageElement = document.querySelector("#message")
-const gameDiv = document.querySelector("#game")
-const menuDiv = document.querySelector("#menu")
-const successSound = document.querySelector("#successSound")
-const errorSound = document.querySelector("#errorSound")
-const winSound = document.querySelector("#winSound")
-const loseSound = document.querySelector("#loseSound")
+import { MAXIMUM_NUMBERS_OF_ATTEMPTS, WORDS } from "./constants.js";
+import { soundManager } from "./sound.js";
 
-class Game{
-    word = ""
-    guessedWord = ""
-    attempt = MAXIMUM_NUMBERS_OF_ATTEMPTS
+class HangmanGame {
+    constructor() {
+        this.wordElement = document.querySelector("#word");
+        this.attemptsElement = document.querySelector("#attempts");
+        this.attemptDemoElement = document.querySelector("#attemptDemo");
+        this.messageElement = document.querySelector("#message");
+        this.gameDiv = document.querySelector("#game");
+        this.menuDiv = document.querySelector("#menu");
 
-    startGame(){
-        this.makeWord()
-        this.updateAttempt()
-        gameDiv.classList.remove("hidden")
-        menuDiv.classList.add("hidden")
+        this.word = "";
+        this.guessedWord = "";
+        this.attempt = MAXIMUM_NUMBERS_OF_ATTEMPTS;
     }
 
-    gameOver(message){
-        messageElement.innerHTML = message
-        gameDiv.classList.add("hidden")
-        menuDiv.classList.remove("hidden")
+    startGame() {
+        this.makeWord();
+        this.updateAttempt();
+        this.gameDiv.classList.remove("hidden");
+        this.menuDiv.classList.add("hidden");
     }
 
-    updateAttempt(){
-        attemptsElement.innerHTML = `${this.attempt}/${MAXIMUM_NUMBERS_OF_ATTEMPTS}`
-        attemptDemoElement.setAttribute("src", `./images/Hangman-${MAXIMUM_NUMBERS_OF_ATTEMPTS - this.attempt}.png`)
+    gameOver(message) {
+        this.messageElement.innerHTML = message;
+        this.gameDiv.classList.add("hidden");
+        this.menuDiv.classList.remove("hidden");
     }
 
-    guessWord(letter){
-        if (this.attempt < 1){
-            return
+    updateAttempt() {
+        this.attemptsElement.innerHTML = `${this.attempt}/${MAXIMUM_NUMBERS_OF_ATTEMPTS}`;
+        this.attemptDemoElement.setAttribute(
+            "src",
+            `./images/Hangman-${MAXIMUM_NUMBERS_OF_ATTEMPTS - this.attempt}.png`
+        );
+    }
+
+    guessWord(letter) {
+        if (this.attempt < 1) {
+            return;
         }
-        let isTrueLetter = false;
-        for (let i = 0; i < this.word.length;i++){
-            if (this.word[i].toLowerCase() === letter){
-                isTrueLetter = true
+    
+        const lowercaseLetter = letter.toLowerCase();
+        const lowercaseWord = this.word.toLowerCase();
+    
+        if (lowercaseWord.includes(lowercaseLetter)) {
+            this.handleCorrectGuess(lowercaseLetter);
+        } else {
+            this.handleIncorrectGuess();
+        }
+    }
+    
+    handleCorrectGuess(letter) {
+        const wordArray = this.word.split("");
+        const guessedWordArray = this.guessedWord.split("");
+        const letterIndices = [];
+    
+        for (let i = 0; i < wordArray.length; i++) {
+            if (wordArray[i].toLowerCase() === letter) {
+                letterIndices.push(i);
             }
         }
-        if (!isTrueLetter){
-
-            this.attempt--;
-            this.updateAttempt()
-            if (this.attempt < 1){
-                this.gameOver(`You lost :( </br> The word you were trying to guess was <u>${this.word}</u>. <br/>Let's try again?`)
-                loseSound.currentTime = 0;
-                loseSound.play()
-                return
-            }
-            errorSound.currentTime = 0;
-            errorSound.play()
-        }else{
-
-            this.openLetter(letter)
-            if (this.guessedWord === this.word){
-                this.gameOver("Greeting! You guessed the word")
-                winSound.currentTime = 0;
-                winSound.play()
-                return
-            }
-            successSound.currentTime = 0;
-            successSound.play()
+    
+        for (const index of letterIndices) {
+            guessedWordArray[index] = wordArray[index];
         }
-
+    
+        this.guessedWord = guessedWordArray.join("");
+        this.wordElement.innerHTML = this.guessedWord;
+    
+        if (this.guessedWord === this.word) {
+            this.handleGameWin();
+        } else {
+            soundManager.playSuccess();
+        }
     }
+    
+    
+    handleIncorrectGuess() {
+        this.attempt--;
+        this.updateAttempt();
+    
+        if (this.attempt < 1) {
+            this.handleGameLoss();
+        } else {
+            soundManager.playError();
+        }
+    }
+    
+    handleGameWin() {
+        this.gameOver("Congratulations! You guessed the word");
+        soundManager.playWin();
+    }
+    
+    handleGameLoss() {
+        this.gameOver(`You lost :( </br> The word you were trying to guess was <u>${this.word}</u>. <br/>Let's try again?`);
+        soundManager.playLose();
+    }
+    
+    updateAttempt() {
+        this.attemptsElement.innerHTML = `${this.attempt}/${MAXIMUM_NUMBERS_OF_ATTEMPTS}`;
+        this.attemptDemoElement.setAttribute(
+            "src",
+            `./images/Hangman-${MAXIMUM_NUMBERS_OF_ATTEMPTS - this.attempt}.png`
+        );
+    }    
 
-    openLetter(letter){
-        const guessedWordArray = this.guessedWord.split('');
-
+    openLetter(letter) {
+        const lowercaseLetter = letter.toLowerCase();
+        const guessedWordArray = this.guessedWord.split("");
+    
         for (let i = 0; i < this.word.length; i++) {
-            if (this.word[i] === letter) {
-                guessedWordArray[i] = letter;
+            if (this.word[i].toLowerCase() === lowercaseLetter) {
+                guessedWordArray[i] = this.word[i];
             }
         }
-        this.guessedWord = guessedWordArray.join('');
-        wordElement.innerHTML = this.guessedWord
-
+    
+        this.guessedWord = guessedWordArray.join("");
+        this.wordElement.innerHTML = this.guessedWord;
     }
-
-    makeWord(){
-        const randomNum = Math.floor(Math.random() * WORDS.length)
-        console.log(randomNum)
-        this.word = WORDS[randomNum]
-        this.attempt = MAXIMUM_NUMBERS_OF_ATTEMPTS
-        this.guessedWord = this.word.replace(/[a-z]/g ,"_")
-        wordElement.innerHTML = this.guessedWord
-
+    
+    makeWord() {
+        this.word = WORDS[Math.floor(Math.random() * WORDS.length)];
+        console.log(this.word);
+        this.attempt = MAXIMUM_NUMBERS_OF_ATTEMPTS;
+        this.guessedWord = this.word.replace(/[a-z]/g, "_");
+        this.wordElement.innerHTML = this.guessedWord;
     }
 }
+
+export default HangmanGame;
