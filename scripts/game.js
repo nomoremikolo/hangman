@@ -83,8 +83,9 @@ class Game{
     }
 
     makeWord(){
-        this.word = WORDS[Math.floor(Math.random() * WORDS.length-1)]
-        console.log(this.word)
+        const randomNum = Math.floor(Math.random() * WORDS.length)
+        console.log(randomNum)
+        this.word = WORDS[randomNum]
         this.attempt = MAXIMUM_NUMBERS_OF_ATTEMPTS
         this.guessedWord = this.word.replace(/[a-z]/g ,"_")
         wordElement.innerHTML = this.guessedWord
