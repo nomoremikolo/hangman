@@ -120,7 +120,6 @@ class HangmanGame {
         this.wordElement.innerHTML = this.guessedWord;
     }
     
-
     makeWord() {
         this.word = WORDS[Math.floor(Math.random() * WORDS.length)];
         console.log(this.word);
