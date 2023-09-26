@@ -68,8 +68,7 @@ function gameOver(message){
 }
 
 function startGame(){
-    word = WORDS[Math.floor(Math.random() * 100)]
-    console.log(word)
+    word = WORDS[Math.floor(Math.random() * WORDS.length-1)]
     currentAttempt = MAXIMUM_NUMBERS_OF_ATTEMPTS
     updateAttempts()
     guessWord()
