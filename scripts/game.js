@@ -40,37 +40,64 @@ class HangmanGame {
         if (this.attempt < 1) {
             return;
         }
-
-        let isTrueLetter = false;
+    
+        const lowercaseLetter = letter.toLowerCase();
+        const lowercaseWord = this.word.toLowerCase();
+    
+        if (lowercaseWord.includes(lowercaseLetter)) {
+            this.handleCorrectGuess(lowercaseLetter);
+        } else {
+            this.handleIncorrectGuess();
+        }
+    }
+    
+    handleCorrectGuess(letter) {
+        const guessedWordArray = this.guessedWord.split("");
+    
         for (let i = 0; i < this.word.length; i++) {
             if (this.word[i].toLowerCase() === letter) {
-                isTrueLetter = true;
+                guessedWordArray[i] = this.word[i];
             }
         }
-
-        if (!isTrueLetter) {
-            this.attempt--;
-            this.updateAttempt();
-
-            if (this.attempt < 1) {
-                this.gameOver(`You lost :( </br> The word you were trying to guess was <u>${this.word}</u>. <br/>Let's try again?`);
-                soundManager.playLose();
-                return;
-            }
-
-            soundManager.playError();
+    
+        this.guessedWord = guessedWordArray.join("");
+        this.wordElement.innerHTML = this.guessedWord;
+    
+        if (this.guessedWord === this.word) {
+            this.handleGameWin();
         } else {
-            this.openLetter(letter);
-
-            if (this.guessedWord === this.word) {
-                this.gameOver("Congratulations! You guessed the word");
-                soundManager.playWin();
-                return;
-            }
-
             soundManager.playSuccess();
         }
     }
+    
+    handleIncorrectGuess() {
+        this.attempt--;
+        this.updateAttempt();
+    
+        if (this.attempt < 1) {
+            this.handleGameLoss();
+        } else {
+            soundManager.playError();
+        }
+    }
+    
+    handleGameWin() {
+        this.gameOver("Congratulations! You guessed the word");
+        soundManager.playWin();
+    }
+    
+    handleGameLoss() {
+        this.gameOver(`You lost :( </br> The word you were trying to guess was <u>${this.word}</u>. <br/>Let's try again?`);
+        soundManager.playLose();
+    }
+    
+    updateAttempt() {
+        this.attemptsElement.innerHTML = `${this.attempt}/${MAXIMUM_NUMBERS_OF_ATTEMPTS}`;
+        this.attemptDemoElement.setAttribute(
+            "src",
+            `./images/Hangman-${MAXIMUM_NUMBERS_OF_ATTEMPTS - this.attempt}.png`
+        );
+    }    
 
     openLetter(letter) {
         const guessedWordArray = this.guessedWord.split("");
