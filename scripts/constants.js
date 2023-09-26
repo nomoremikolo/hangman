@@ -1,5 +1,5 @@
-const MAXIMUM_NUMBERS_OF_ATTEMPTS = 6
-const WORDS = [
+export const MAXIMUM_NUMBERS_OF_ATTEMPTS = 6
+export const WORDS = [
     "apple", "banana", "cat", "dog", "elephant", "flower", "guitar", "house", "ice cream", "jacket",
     "kite", "lemon", "monkey", "night", "orange", "pencil", "queen", "rainbow", "sun", "tree",
     "umbrella", "violin", "water", "xylophone", "yacht", "zebra", "book", "car", "desk", "egg",
