@@ -63,7 +63,7 @@ class HangmanGame {
         if (this.guessedWord === this.word) {
             this.handleGameWin();
         } else {
-            soundManager.playSuccess();
+            soundManager.loadAndPlaySound("successSound", "/hangman/sounds/clickSuccess.wav");
         }
     }
 
@@ -74,18 +74,18 @@ class HangmanGame {
         if (this.attempt < 1) {
             this.handleGameLoss();
         } else {
-            soundManager.playError();
+            soundManager.loadAndPlaySound("errorSound", "/hangman/sounds/clickWrong.wav");
         }
     }
 
     handleGameWin() {
         this.gameOver("Congratulations! You guessed the word");
-        soundManager.playWin();
+        soundManager.loadAndPlaySound("winSound", "/hangman/sounds/winSound.wav");
     }
 
     handleGameLoss() {
         this.gameOver(`You lost :( </br> The word you were trying to guess was <u>${this.word}</u>. <br/>Let's try again?`);
-        soundManager.playLose();
+        soundManager.loadAndPlaySound("loseSound", "/hangman/sounds/loseSound.wav");
     }
 
     updateAttempt() {
