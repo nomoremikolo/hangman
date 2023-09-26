@@ -5,12 +5,13 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <link rel="stylesheet" href="./index.css">
+    <link rel="icon" href="./assets/hangman.ico">
     <title>Hangman</title>
 </head>
 <body>
     <div id="menu" class="menu">
         <h1 id="message" class="message">Start the game?</h1>
-        <button onclick="startGame()" class="start-btn">Start</button>
+        <button onclick="game.startGame()" class="start-btn">Start</button>
     </div>
     <div id="game" class="game hidden">
         <div class="word-container">
@@ -37,6 +38,8 @@
             </div>
         </div>
     </div>
+    <script src="scripts/constants.js"></script>
+    <script src="scripts/game.js"></script>
     <script src="scripts/index.js"></script>
 </body>
 </html>

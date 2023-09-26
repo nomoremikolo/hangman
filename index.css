@@ -1,17 +1,23 @@
-*{
+* {
     font-family: "Arial";
 }
-.container{
+
+.container {
     display: flex;
     justify-content: center;
 }
-.block{
+
+.block {
     display: flex;
     width: 800px;
     height: 340px;
     align-items: center;
+    border: 1px solid black;
+    border-radius: 5px;
+
 }
-#word{
+
+#word {
     text-align: center;
     letter-spacing: 5px;
     font-size: 25px;
@@ -19,35 +25,46 @@
     margin: 5px;
 
 }
-#attempts{
+
+#attempts {
     text-align: center;
 }
-#attempts:before{
+
+#attempts:before {
     content: "Attempts:";
 }
+
 .left, .right {
     flex: 1;
     padding: 10px;
 }
-.btn{
+
+.left{
+}
+
+.btn {
     font-size: 35px;
     width: 50px;
     height: 50px;
     margin: 3px;
 }
-.hidden{
+
+.hidden {
     display: none;
 }
-.menu{
+
+.menu {
     width: 600px;
     margin: auto;
     text-align: center;
 }
-.start-btn{
+
+.start-btn {
     padding: 10px 25px;
     font-size: 18px;
 }
-.message{
+
+.message {
     line-height: 50px;
     font-weight: normal;
 }
